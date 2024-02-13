@@ -1,0 +1,29 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp3
+  annotations:
+    storageclass.kubernetes.io/is-default-class: 'true'
+  fields:
+    - gp3 (default)
+    - ebs.csi.aws.com
+    - Delete
+    - WaitForFirstConsumer
+    - true
+    - 11d
+allowVolumeExpansion: true
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: failure-domain.beta.kubernetes.io/zone
+        values:
+          - us-east-1c
+          - us-east-1b
+          - us-east-1a
+parameters:
+  csi.storage.k8s.io/fstype: ext4
+  iopsPerGB: '15'
+  type: gp3
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+__clone: true
